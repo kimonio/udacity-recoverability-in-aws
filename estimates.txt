@@ -1,0 +1,19 @@
+Write a paragraph or two describing the achievable Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for this Multi-AZ, multi-region database in terms of:
+
+Minimum RTO for a single AZ outage
+RTO would be 1-2 minutes depending on how long it takes for the RDS service to recognize the failure of primary DB instance in one AZ, and then switch over to secondary DB instance in the the over AZ. This is due to the same endpoint URL being used irrespective of whether we are using the primary or secondary DB instance. The failover would be tranparent to the applications using the database.
+
+Minimum RTO for a single region outage
+RTO is dependent on a number of factors. 
+- Since the endpoint urls for the instances are different for the DB instance in each region, the RTO failover will dependd how long it takes to update the applications with the new database enpoint url when the region goes down.
+	- udacity.cibubqhrhari.us-east-1.rds.amazonaws.com
+	- udacity.c5vmxzx5u9lo.us-west-2.rds.amazonaws.com
+- Time it takes to promote the read replica to be master so it can accept write as well as read operations.
+
+Minimum RPO for a single AZ outage
+- RPO would be 0 minutes, since the data is synchronously replicated between the primary and secondary DB instances located in different AZ's.
+
+Minimum RPO for a single region outage
+RPO would be near 0, since the data is asynchronously replicated between the primary and read replica DB instances located in different region.
+
+
